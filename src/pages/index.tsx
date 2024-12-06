@@ -9,7 +9,9 @@ import axios from 'axios';
 
 export default function Home() {
   const dispatch = useDispatch();
-  const { currentPage } = useSelector((state: RootState) => state.email);
+  const { currentPage, selectedEmail } = useSelector((state: RootState) => state.email);
+
+
 
   useEffect(() => {
     const fetchEmails = async () => {
@@ -29,35 +31,40 @@ export default function Home() {
   }, [currentPage, dispatch]);
 
   return (
-    <div className="min-h-screen background">
+    <div className="min-h-screen pt-3 ">
       {/* <header className="accent text-white p-4">
         <h1 className="text-4xl font-bold text-white">Email Client</h1>
       </header> */}
 
+      {/* email filters */}
       <EmailFilters />
 
+      
       <main className="container mx-auto">
-        <div className="flex flex-col lg:flex-row bg-white shadow-lg">
+        {/* email list and body */}
+        <div className="flex flex-col lg:flex-row space-x-5">
           <EmailList />
-          <EmailBody />
+          {selectedEmail && <EmailBody />}
+
         </div>
 
+      {/* page buttons */}
         <div className="flex justify-center p-4 space-x-4">
           <button
             onClick={() => dispatch(setPage(1))}
-            className={`px-4 py-2 rounded ${
-              currentPage === 1 ? 'bg-blue-500 text-white' : 'bg-white'
+            className={`px-4 py-2 rounded-full ${
+              currentPage === 1 ? 'accent text-white' : 'bg-white'
             }`}
           >
-            Page 1
+             1
           </button>
           <button
             onClick={() => dispatch(setPage(2))}
-            className={`px-4 py-2 rounded ${
-              currentPage === 2 ? 'bg-blue-500 text-white' : 'bg-white'
+            className={`px-4 py-2 rounded-full ${
+              currentPage === 2 ? 'accent text-white' : 'bg-white'
             }`}
           >
-            Page 2
+             2
           </button>
         </div>
       </main>

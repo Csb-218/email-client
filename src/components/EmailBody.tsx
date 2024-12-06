@@ -4,6 +4,8 @@ import { format } from 'date-fns';
 import { RootState } from '../store/store';
 import { toggleFavorite } from '../store/emailSlice';
 import { Email_Body } from '../types/email';
+import { getInitial } from '../utils/helpers';
+import { Loader } from './Loader';
 
 const EmailBody: React.FC = () => {
   const dispatch = useDispatch();
@@ -21,6 +23,7 @@ const EmailBody: React.FC = () => {
           `https://flipkart-email-mock.now.sh/?id=${selectedEmail}`
         );
         const data = await response.json();
+
         setEmailBody(data);
       }
     };
@@ -30,35 +33,55 @@ const EmailBody: React.FC = () => {
 
   if (!selectedEmail || !selectedEmailData || !emailBody) {
     return (
-      <div className="w-full lg:w-1/2 p-8 flex items-center justify-center text-gray-500">
-        Select an email to view its contents
+      <div className="w-full lg:w-2/3 p-8 flex items-center justify-center text-gray-500">
+        <Loader/>
       </div>
     );
   }
 
   return (
-    <div className="w-full lg:w-1/2 p-8">
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold">{selectedEmailData.subject}</h2>
-        <button
-          onClick={() => dispatch(toggleFavorite(selectedEmail))}
-          className={`px-4 py-2 rounded ${
-            selectedEmailData.favorite
-              ? 'bg-yellow-500 text-white'
-              : 'bg-gray-200 text-gray-700'
-          }`}
-        >
-          {selectedEmailData.favorite ? 'Favorited' : 'Mark as Favorite'}
-        </button>
+    <>
+    
+      <div className="w-full lg:w-2/3 flex p-8 border-default rounded-lg bg-white">
+
+        {/* email logo */}
+        <section className="w-1/12">
+          <span className="w-12 h-12  rounded-full accent flex items-center justify-center  text-white font-bold">
+            {getInitial(selectedEmailData.from.name)}
+          </span>
+        </section>
+
+        {/* email body and details */}
+        <section className=' w-10/12'>
+
+          <div className="flex justify-between items-center mb-6">
+            <h2 className="text-2xl font-semibold text-default">{selectedEmailData.subject}</h2>
+            <button
+              onClick={() => dispatch(toggleFavorite(selectedEmail))}
+              className={`px-4 py-2 rounded-full  ${selectedEmailData.favorite
+                ? 'accent-text'
+                : 'accent text-white'
+                }`}
+            >
+              {selectedEmailData.favorite ? 'Favorited' : 'Mark as Favorite'}
+            </button>
+          </div>
+
+
+          <div className="my-4 text-default text-sm">
+            {format(new Date(selectedEmailData.date), 'dd/MM/yyyy hh:mm a')}
+          </div>
+
+          <div
+            className="prose max-w-none"
+            dangerouslySetInnerHTML={{ __html: emailBody.body }}
+          >
+          </div>
+        </section>
+
       </div>
-      <div className="mb-4 text-gray-600">
-        {format(new Date(selectedEmailData.date), 'dd/MM/yyyy hh:mm a')}
-      </div>
-      <div
-        className="prose max-w-none"
-        dangerouslySetInnerHTML={{ __html: emailBody.body }}
-      />
-    </div>
+    </>
+
   );
 };
 

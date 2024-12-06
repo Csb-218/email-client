@@ -44,6 +44,7 @@ const emailSlice = createSlice({
     },
     setPage: (state, action: PayloadAction<number>) => {
       state.currentPage = action.payload;
+      state.selectedEmail = null;
     },
   },
 });
