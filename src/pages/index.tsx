@@ -29,10 +29,10 @@ export default function Home() {
   }, [currentPage, dispatch]);
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="bg-blue-600 text-white p-4">
+    <div className="min-h-screen background">
+      {/* <header className="accent text-white p-4">
         <h1 className="text-4xl font-bold text-white">Email Client</h1>
-      </header>
+      </header> */}
 
       <EmailFilters />
 

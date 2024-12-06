@@ -15,15 +15,17 @@ const EmailFilters: React.FC = () => {
   ];
 
   return (
-    <div className="flex space-x-4 p-4 bg-gray-100">
+    <div className="flex space-x-4 py-4 px-20 bg-gray-100 ">
+
+      <p className = "py-1">Filter By: </p>
       {filters.map(({ value, label }) => (
         <button
           key={value}
           onClick={() => dispatch(setFilter(value as any))}
-          className={`px-4 py-2 rounded ${
+          className={`px-4 py-1 rounded-full ${
             filter === value
-              ? 'bg-blue-500 text-white'
-              : 'bg-white text-gray-700 hover:bg-gray-50'
+              ? 'filter-button text-gray-700  border-gray-700'
+              : ' '
           }`}
         >
           {label}

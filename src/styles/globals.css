@@ -1,3 +1,29 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.background{
+    @apply bg-[#F4F5F9]
+}
+
+.accent{
+    @apply bg-[#E45065]
+}
+
+.border{
+    @apply bg-[#CFD2DC]
+}
+
+.text{
+    @apply bg-[#636363]
+}
+
+.filter-button{
+    @apply bg-[#E1E4EA]
+}
+
+.read-background{
+    @apply bg-[#F2F2F2]
+}
+
+
