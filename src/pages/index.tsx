@@ -18,11 +18,6 @@ export default function Home() {
       const response = await axios.get(
         `https://flipkart-email-mock.now.sh?page=${currentPage}`
       );
-      console.log(
-        'dispatched',
-        `https://flipkart-email-mock.now.sh?page=${currentPage}`,
-        response.data
-      );
       const data = response.data;
       dispatch(setEmails(data.list));
     };

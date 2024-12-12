@@ -6,36 +6,63 @@ import { selectEmail } from '../store/emailSlice';
 import { Email } from '../types/email';
 import { getInitial } from '../utils/helpers';
 
+
 const EmailList: React.FC = () => {
+
+
+  const [filteredEmails,setfilteredEmails] = React.useState<Email[]>([])
+
   const dispatch = useDispatch();
-  const { emails, selectedEmail, filter } = useSelector(
+  const { emails, selectedEmail, filter ,readEmails,favouritedEmails} = useSelector(
     (state: RootState) => state.email
   );
 
-  const filteredEmails = emails.filter((email) => {
-    switch (filter) {
-      case 'read':
-        return email.read;
-      case 'unread':
-        return !email.read;
-      case 'favorite':
-        return email.favorite;
+
+  function ifRead(thisEmail:Email){
+
+    const isRead = readEmails.find(email => email.id === thisEmail.id)
+    if(isRead)return true
+    else return false
+  }
+
+  function ifFavourite(thisEmail:Email){
+
+    const isRead = favouritedEmails.find(email => email.id === thisEmail.id)
+    if(isRead)return true
+    else return false
+  }
+
+  React.useEffect(()=>{
+
+    switch(filter){
+      case('unread'):
+
+        const unreadEmails = emails.filter(email => readEmails.find(read_email => read_email.id === email.id))
+        setfilteredEmails(unreadEmails);
+      case('favorite'):
+        setfilteredEmails(favouritedEmails);
+      case('read'):
+        setfilteredEmails(readEmails);
       default:
-        return true;
+        setfilteredEmails(emails);
+
     }
-  });
+
+
+  },[filter])
+
 
   
 
   return (
     <div className={` ${selectedEmail ? 'lg:w-1/3' : 'w-full'} space-y-4 h-screen overflow-scroll no-scrollbar`}>
-      {filteredEmails.map((email: Email) => (
+      {emails.map((email: Email) => (
         <div
           key={email.id}
           className={`p-4  cursor-pointer rounded-lg 
-           ${email.read ? 'read-background' : 'bg-white'} 
-           ${selectedEmail === email.id ? 'accent-border' :'border-default'}`}
-          onClick={() => dispatch(selectEmail(email.id))}
+           ${ifRead(email) ? 'read-background' : 'bg-white'} 
+           ${ifRead(email) ? 'accent-border' :'border-default'}`}
+          onClick={() => dispatch(selectEmail(email))}
         >
           <div className="flex  space-x-4 content-center">
             {/* email sender logo  */}
@@ -65,7 +92,7 @@ const EmailList: React.FC = () => {
 
               <div className="text-sm text-default flex space-x-5 ">
                   {<p className='lowercase '>{format(new Date(email.date), 'dd/MM/yyyy hh:mm a')}</p>}
-                  {email.favorite && <p className ='accent-text'>Favourite</p> }
+                  {ifFavourite(email) && <p className ='accent-text'>Favourite</p> }
               </div>
 
             </div>

@@ -3,7 +3,9 @@ import { Email } from '../types/email';
 
 interface EmailState {
   emails: Email[];
-  selectedEmail: string | null;
+  selectedEmail: Email;
+  favouritedEmails:Email[],
+  readEmails:Email[],
   filter: 'all' | 'read' | 'unread' | 'favorite';
   currentPage: number;
 }
@@ -12,6 +14,8 @@ const initialState: EmailState = {
   emails: [],
   selectedEmail: null,
   filter: 'all',
+  favouritedEmails:[],
+  readEmails:[],
   currentPage: 1,
 };
 
@@ -20,19 +24,24 @@ const emailSlice = createSlice({
   initialState,
   reducers: {
     setEmails: (state, action: PayloadAction<Email[]>) => {
-      state.emails = action.payload;
+      state.emails = [...action.payload];
     },
-    selectEmail: (state, action: PayloadAction<string>) => {
+    selectEmail: (state, action: PayloadAction<Email>) => {
       state.selectedEmail = action.payload;
-      const email = state.emails.find((e) => e.id === action.payload);
-      if (email) {
-        email.read = true;
-      }
+      state.readEmails = [...state.readEmails,action.payload];
+      // const email = state.emails.find((e) => e.id === action.payload);
+      // if (email) {
+      //   email.read = true;
+      // }
     },
-    toggleFavorite: (state, action: PayloadAction<string>) => {
-      const email = state.emails.find((e) => e.id === action.payload);
+    toggleFavorite: (state, action: PayloadAction<Email>) => {
+      const email = state.emails.find((e) => e.id === action.payload.id);
       if (email) {
-        email.favorite = !email.favorite;
+        // email.favorite = !email.favorite;
+        state.favouritedEmails.push(email)
+      }
+      else {
+        state.favouritedEmails.filter(email => email.id !== action.payload.id )
       }
     },
     setFilter: (
@@ -41,6 +50,7 @@ const emailSlice = createSlice({
     ) => {
       state.filter = action.payload;
       state.selectedEmail = null;
+
     },
     setPage: (state, action: PayloadAction<number>) => {
       state.currentPage = action.payload;
@@ -49,6 +59,5 @@ const emailSlice = createSlice({
   },
 });
 
-export const { setEmails, selectEmail, toggleFavorite, setFilter, setPage } =
-  emailSlice.actions;
+export const { setEmails, selectEmail, toggleFavorite, setFilter, setPage } = emailSlice.actions;
 export default emailSlice.reducer;

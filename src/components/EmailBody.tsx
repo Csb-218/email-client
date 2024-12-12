@@ -14,7 +14,7 @@ const EmailBody: React.FC = () => {
   );
   const [emailBody, setEmailBody] = useState<Email_Body | null>(null);
 
-  const selectedEmailData = emails.find((email) => email.id === selectedEmail);
+  const selectedEmailData = emails.find((email) => email.id === selectedEmail.id);
 
   useEffect(() => {
     const fetchEmailBody = async () => {
