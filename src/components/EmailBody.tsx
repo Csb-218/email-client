@@ -2,19 +2,20 @@ import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { format } from 'date-fns';
 import { RootState } from '../store/store';
-import { toggleFavorite } from '../store/emailSlice';
+import { toggleFavorite ,selectEmail } from '../store/emailSlice';
 import { Email_Body } from '../types/email';
 import { getInitial } from '../utils/helpers';
 import { Loader } from './Loader';
 
+
 const EmailBody: React.FC = () => {
   const dispatch = useDispatch();
-  const { emails, selectedEmail } = useSelector(
+  const { readEmails,emails,unReadEmails, selectedEmail , filter} = useSelector(
     (state: RootState) => state.email
   );
   const [emailBody, setEmailBody] = useState<Email_Body | null>(null);
 
-  const selectedEmailData = emails.find((email) => email.id === selectedEmail);
+  const selectedEmailData = readEmails.find((email) => email.id === selectedEmail);
 
   useEffect(() => {
     const fetchEmailBody = async () => {
@@ -31,9 +32,12 @@ const EmailBody: React.FC = () => {
     fetchEmailBody();
   }, [selectedEmail]);
 
-  if (!selectedEmail || !selectedEmailData || !emailBody) {
+ 
+
+
+  if (!selectedEmail || !selectedEmailData || !emailBody  ) {
     return (
-      <div className="w-full lg:w-2/3 p-8 flex items-center justify-center text-gray-500">
+      <div className="w-full lg:w-2/3  p-8 flex items-center justify-center text-gray-500">
         <Loader/>
       </div>
     );
@@ -41,7 +45,6 @@ const EmailBody: React.FC = () => {
 
   return (
     <>
-    
       <div className="w-full lg:w-2/3 flex p-8 border-default rounded-lg bg-white">
 
         {/* email logo */}
@@ -83,6 +86,7 @@ const EmailBody: React.FC = () => {
     </>
 
   );
+  
 };
 
 export default EmailBody;

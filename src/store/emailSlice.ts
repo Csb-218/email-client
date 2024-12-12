@@ -4,6 +4,8 @@ import { Email } from '../types/email';
 interface EmailState {
   emails: Email[];
   selectedEmail: string | null;
+  readEmails: Email[];
+  unReadEmails: Email[];
   filter: 'all' | 'read' | 'unread' | 'favorite';
   currentPage: number;
 }
@@ -11,6 +13,8 @@ interface EmailState {
 const initialState: EmailState = {
   emails: [],
   selectedEmail: null,
+  unReadEmails:[],
+  readEmails:[],
   filter: 'all',
   currentPage: 1,
 };
@@ -21,18 +25,35 @@ const emailSlice = createSlice({
   reducers: {
     setEmails: (state, action: PayloadAction<Email[]>) => {
       state.emails = action.payload;
+      state.unReadEmails = [...state.unReadEmails , ...action.payload] ;
     },
-    selectEmail: (state, action: PayloadAction<string>) => {
+    selectEmail: (state, action: PayloadAction<string | null>) => {
+     
       state.selectedEmail = action.payload;
-      const email = state.emails.find((e) => e.id === action.payload);
-      if (email) {
-        email.read = true;
+
+      const foundEmail:Email = state.emails.find((e) => e.id === action.payload);
+      const readEmail:Email = state.readEmails.find((e) => e.id === action.payload);
+
+      if (foundEmail) {
+          foundEmail.read = true;
+          // add to unread emails
+          state.unReadEmails = state.unReadEmails.filter(email => email.id !== foundEmail.id)
+          
       }
+      if(!readEmail){
+        // add to read emails
+         state.readEmails = [...state.readEmails,foundEmail]
+      } 
     },
+
     toggleFavorite: (state, action: PayloadAction<string>) => {
-      const email = state.emails.find((e) => e.id === action.payload);
+      
+      const email = state.readEmails.find((e) => e.id === action.payload);
+      
       if (email) {
         email.favorite = !email.favorite;
+        
+        if(!email.favorite) state.selectedEmail = null
       }
     },
     setFilter: (
@@ -45,6 +66,7 @@ const emailSlice = createSlice({
     setPage: (state, action: PayloadAction<number>) => {
       state.currentPage = action.payload;
       state.selectedEmail = null;
+
     },
   },
 });
