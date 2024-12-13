@@ -37,7 +37,7 @@ const EmailBody: React.FC = () => {
 
   if (!selectedEmail || !selectedEmailData || !emailBody  ) {
     return (
-      <div className="w-full lg:w-2/3  p-8 flex items-center justify-center text-gray-500">
+      <div className="w-full lg:w-2/3 h-screen p-8 flex items-center justify-center text-gray-500">
         <Loader/>
       </div>
     );
@@ -45,7 +45,7 @@ const EmailBody: React.FC = () => {
 
   return (
     <>
-      <div className="w-full lg:w-2/3 flex p-8 border-default rounded-lg bg-white">
+      <div className="w-full lg:w-2/3 h-full flex p-8 border-default rounded-lg bg-white ">
 
         {/* email logo */}
         <section className="w-1/12">
@@ -55,7 +55,7 @@ const EmailBody: React.FC = () => {
         </section>
 
         {/* email body and details */}
-        <section className=' w-10/12'>
+        <section className=' w-10/12  overflow-scroll no-scrollbar'>
 
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-2xl font-semibold text-default">{selectedEmailData.subject}</h2>
@@ -76,7 +76,7 @@ const EmailBody: React.FC = () => {
           </div>
 
           <div
-            className="prose max-w-none"
+            className="prose max-w-none "
             dangerouslySetInnerHTML={{ __html: emailBody.body }}
           >
           </div>

@@ -17,7 +17,7 @@ const EmailList: React.FC = () => {
   
 
   return (
-    <div className={` ${selectedEmail ? 'lg:w-1/3' : 'w-full'} space-y-4 h-screen overflow-scroll no-scrollbar`}>
+    <div className={` ${selectedEmail ? 'lg:w-1/3' : 'w-full'} space-y-4 h-full overflow-scroll no-scrollbar`}>
       {
       filter === 'all' &&
       emails.map((email: Email) => (

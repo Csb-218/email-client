@@ -8,10 +8,9 @@ import EmailFilters from '../components/EmailFilters';
 import axios from 'axios';
 
 export default function Home() {
+
   const dispatch = useDispatch();
   const { currentPage, selectedEmail } = useSelector((state: RootState) => state.email);
-
-
 
   useEffect(() => {
     const fetchEmails = async () => {
@@ -26,7 +25,7 @@ export default function Home() {
   }, [currentPage, dispatch]);
 
   return (
-    <div className="min-h-screen pt-3 ">
+    <div className="max-h-screen pt-3 ">
       {/* <header className="accent text-white p-4">
         <h1 className="text-4xl font-bold text-white">Email Client</h1>
       </header> */}
@@ -37,13 +36,15 @@ export default function Home() {
       
       <main className="container mx-auto">
         {/* email list and body */}
-        <div className="flex flex-col lg:flex-row space-x-5">
+        <div className="flex flex-col lg:flex-row h-screen overflow-scroll space-x-5">
           <EmailList />
           {selectedEmail && <EmailBody />}
 
         </div>
 
       {/* page buttons */}
+      {
+        // filter === 'all' && 
         <div className="flex justify-center p-4 space-x-4">
           <button
             onClick={() => dispatch(setPage(1))}
@@ -62,6 +63,8 @@ export default function Home() {
              2
           </button>
         </div>
+      }
+        
       </main>
     </div>
   );
