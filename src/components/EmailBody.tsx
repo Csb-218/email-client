@@ -21,7 +21,7 @@ const EmailBody: React.FC = () => {
     const fetchEmailBody = async () => {
       if (selectedEmail) {
         const response = await fetch(
-          `https://flipkart-email-mock.now.sh/?id=${selectedEmail}`
+          `${process.env.NEXT_APP_BASE_URL}/?id=${selectedEmail}`
         );
         const data = await response.json();
 
