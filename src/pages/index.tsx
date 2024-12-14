@@ -15,7 +15,7 @@ export default function Home() {
   useEffect(() => {
     const fetchEmails = async () => {
       const response = await axios.get(
-        `https://flipkart-email-mock.now.sh?page=${currentPage}`
+        `${process.env.NEXT_APP_BASE_URL}?page=${currentPage}`
       );
       const data = response.data;
       dispatch(setEmails(data.list));
