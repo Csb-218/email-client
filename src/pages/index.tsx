@@ -14,8 +14,9 @@ export default function Home() {
 
   useEffect(() => {
     const fetchEmails = async () => {
+      console.log(process.env.NEXT_APP_PUBLIC_BASE_URL)
       const response = await axios.get(
-        `${process.env.NEXT_APP_BASE_URL}?page=${currentPage}`
+        `${process.env.NEXT_PUBLIC_BASE_URL}?page=${currentPage}`
       );
       const data = response.data;
       dispatch(setEmails(data.list));

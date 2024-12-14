@@ -21,7 +21,7 @@ const EmailBody: React.FC = () => {
     const fetchEmailBody = async () => {
       if (selectedEmail) {
         const response = await fetch(
-          `${process.env.NEXT_APP_BASE_URL}/?id=${selectedEmail}`
+          `${process.env.NEXT_PUBLIC_BASE_URL}/?id=${selectedEmail}`
         );
         const data = await response.json();
 
